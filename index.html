@@ -291,12 +291,107 @@
             font-size: 28px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .main-nav { display: none; } /* On a real site, this would become a hamburger menu */
-            .hero h1 { font-size: 2.8rem; }
-            .hero p { font-size: 1.2rem; }
-        }
+        /* PASTE THIS CODE AT THE END OF YOUR <style> SECTION */
+
+/* =================================================================== */
+/*                    MOBILE NAVIGATION STYLES                         */
+/* =================================================================== */
+
+/* Prevents page from scrolling when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Hamburger Button */
+.mobile-nav-toggle {
+    display: none; /* Hidden by default, shown on mobile */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001; /* Must be above the header */
+}
+
+.hamburger-line {
+    width: 30px;
+    height: 3px;
+    background-color: var(--dark-text);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+}
+
+/* Mobile Menu Overlay */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(5px);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 999;
+}
+
+/* Show menu when body has .menu-open class */
+body.menu-open .mobile-nav {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mobile-nav a {
+    color: var(--dark-text);
+    font-size: 2rem;
+    text-decoration: none;
+    margin: 20px 0;
+    font-weight: 600;
+}
+
+/* =================================================================== */
+/*                     MOBILE RESPONSIVE STYLES                        */
+/* =================================================================== */
+@media (max-width: 768px) {
+    /* 1. HIDE DESKTOP ELEMENTS & SHOW HAMBURGER */
+    .main-nav { display: none; }
+    .site-header .btn-pink { display: none; }
+    .mobile-nav-toggle { display: flex; }
+
+    /* 2. REBUILD MOBILE HEADER LAYOUT FOR PROPER SPACING */
+    .site-header {
+        --header-height: 80px; /* Makes the header slightly shorter */
+    }
+    
+    /* THIS IS THE KEY FIX: We are now controlling the padding inside the header directly */
+    .header-container {
+        padding: 0 15px; /* Adds 15px of space on the left and right edges */
+    }
+
+    .logo-img {
+        height: 35px; /* A more effective size reduction for the logo */
+    }
+    .logo {
+        font-size: 20px; /* Reduces the logo text size */
+    }
+    
+    /* 3. ADJUST FONT SIZES AND SPACING FOR THE REST OF THE PAGE */
+    .hero h1 { font-size: 2.8rem; }
+    .hero p { font-size: 1.1rem; }
+    .section-title { font-size: 2.2rem; margin-bottom: 40px; }
+    .page-section { padding: 60px 0; }
+}
     </style>
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -323,8 +418,26 @@
                 </nav>
                 <!-- TODO: Add your email address after "mailto:" -->
                 <a href="mailto:support@livelunger-lb.org" class="btn btn-pink">Contact Us</a>
+                <!-- PASTE THIS CODE AFTER THE "CONTACT US" BUTTON -->
+
+<!-- Hamburger Button HTML -->
+<button class="mobile-nav-toggle" aria-label="Open navigation">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+</button>
             </div>
         </div>
+        <!-- PASTE THIS CODE RIGHT AFTER THE CLOSING </header> TAG -->
+
+<!-- Mobile Navigation Menu HTML -->
+<nav class="mobile-nav">
+    <a href="#home">Home</a>
+    <a href="#mission">Our Mission</a>
+    <a href="#impact">Our Impact</a>
+    <a href="#get-involved">Get Involved</a>
+    <a href="mailto:support@livelunger-lb.org">Contact Us</a>
+</nav>
     </header>
 
     <main>
@@ -409,6 +522,26 @@
             <p>© 2025 LiveLunger. All Rights Reserved.</p>
         </div>
     </footer>
+<!-- PASTE THIS SCRIPT RIGHT BEFORE THE CLOSING </body> TAG -->
 
+<!-- JAVASCRIPT FOR MOBILE MENU -->
+<script>
+    const navToggle = document.querySelector('.mobile-nav-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const body = document.body;
+
+    // Function to toggle the menu
+    function toggleMenu() {
+        body.classList.toggle('menu-open');
+    }
+
+    // Event listener for the hamburger button
+    navToggle.addEventListener('click', toggleMenu);
+
+    // Event listener for all links in the mobile menu to close it on click
+    mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', toggleMenu);
+    });
+</script>
 </body>
 </html>
