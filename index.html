@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveLunger</title>
+    <link rel="icon" type="image/png" href="imgs/logo_trans.png">
+    <style>
+        /* =================================================================== */
+        /*                      CORE LAYOUT & THEME                            */
+        /* =================================================================== */
+        :root {
+            --primary-pink: #d16d7a;
+            --primary-green: #8bc34a;
+            --dark-text: #333;
+            --light-bg: #f9f9f9;
+            --white: #ffffff;
+            --font-family: 'Poppins', sans-serif;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --header-height: 80px; /* Define header height as a variable */
+        }
+
+        /* 1. SMOOTH SCROLLING & SCROLL FIX */
+        /* This tells the browser to leave space for the header when jumping to a section */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height); 
+        }
+
+        /* 2. GLOBAL OFFSET FIX */
+        /* This pushes the entire page down to prevent the header from overlapping content */
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            color: var(--dark-text);
+            background-color: var(--white);
+            padding-top: var(--header-height); /* The main fix! */
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* =================================================================== */
+        /*                      NEW, RELIABLE HEADER                           */
+        /* =================================================================== */
+        .site-header {
+            background-color: var(--white);
+            height: var(--header-height);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            
+            /* Positioning */
+            position: fixed; /* Fixes the header to the viewport */
+            top: 0;
+            left: 0;
+            width: 100%; /* Ensures it spans the full width */
+            z-index: 1000; /* Keeps it on top of all other content */
+
+            /* Flexbox for alignment */
+            display: flex;
+            align-items: center; /* Vertically centers items */
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        /* TODO: Replace with your permanently hosted logo link */
+        .logo-img {
+            height: 45px; /* Control logo image size */
+            width: auto;
+            margin-right: 12px;
+        }
+        
+        .main-nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--primary-green);
+        }
+
+        /* Generic Button Styles */
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-pink {
+            background-color: var(--primary-pink);
+            color: var(--white);
+        }
+
+        .btn-pink:hover {
+            background-color: #c95c6a;
+            transform: translateY(-2px);
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .btn-green:hover {
+            background-color: #7ab33a;
+            transform: translateY(-2px);
+        }
+
+        /* =================================================================== */
+        /*                         PAGE SECTIONS                               */
+        /* =================================================================== */
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--white);
+            
+            /* TODO: Replace this background image */
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url(imgs/bg.jpg) no-repeat center center/cover;
+            
+            /* This makes the hero section fill the initial screen */
+            min-height: calc(100vh - var(--header-height));
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* General Section Styling */
+        .page-section {
+            padding: 100px 0;
+        }
+        
+        .page-section.bg-light {
+            background-color: var(--light-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--primary-green);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Mission Section */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .mission-item {
+            background: var(--white);
+            padding: 40px 25px;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+        
+        .mission-item .icon {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+        }
+
+        .mission-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Impact Section */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .impact-item .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+        
+        .impact-item .stat-label {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Get Involved Section */
+        .get-involved-content {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        
+        .get-involved-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+        
+        .social-links {
+            display: flex; 
+            justify-content: center;
+            gap: 25px; 
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .social-links a {
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%;
+            background-color: var(--primary-pink);
+            color: var(--white); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            text-decoration: none; 
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-green);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark-text);
+            color: var(--white);
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .site-footer .logo {
+            justify-content: center;
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-nav { display: none; } /* On a real site, this would become a hamburger menu */
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.2rem; }
+        }
+    </style>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ======================= HEADER ======================= -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-container">
+                <a href="#home" class="logo">
+                    <!-- The logo is now a proper <img> tag -->
+                    <img src="imgs/logo_trans.png" alt="LiveLunger Logo" class="logo-img">
+                    LiveLunger
+                </a>
+                <nav class="main-nav">
+                    <a href="#home">Home</a>
+                    <a href="#mission">Our Mission</a>
+                    <a href="#impact">Our Impact</a>
+                    <a href="#get-involved">Get Involved</a>
+                </nav>
+                <!-- TODO: Add your email address after "mailto:" -->
+                <a href="mailto:support@livelunger-lb.org" class="btn btn-pink">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ======================= HERO SECTION ======================= -->
+        <section id="home" class="hero">
+            <h1>Breathe Free, Live Lunger</h1>
+            <p>Join our movement to fight smoking and reclaim our right to clean air.</p>
+            <a href="#get-involved" class="btn btn-green">Join the Movement</a>
+        </section>
+
+        <!-- ======================= OUR MISSION SECTION ======================= -->
+        <section id="mission" class="page-section bg-light">
+            <div class="container">
+                <h2 class="section-title">Our Mission</h2>
+                <div class="mission-grid">
+                    <div class="mission-item">
+                        <div class="icon"><i class="fas fa-book-open"></i></div>
+                        <h3>Educate</h3>
+                        <p>We aim to raise awareness about the severe health risks of smoking through community outreach, school programs, and campaigns.</p>
+                    </div>
+                    <div class="mission-item">
+                        <div class="icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3>Support</h3>
+                        <p>We provide a supportive community and connect individuals with resources to help them on their journey to quit smoking for good.</p>
+                    </div>
+                    <div class="mission-item">
+                        <div class="icon"><i class="fas fa-bullhorn"></i></div>
+                        <h3>Advocate</h3>
+                        <p>We advocate for stronger public health policies and smoke-free environments to protect everyone, especially future generations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= OUR IMPACT SECTION ======================= -->
+        <section id="impact" class="page-section">
+            <div class="container">
+                <h2 class="section-title">Our Impact</h2>
+                <div class="impact-grid">
+                    <div class="impact-item">
+                        <div class="stat-number">600+</div>
+                        <div class="stat-label">Youth Reached</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">Cigarette Butts Collected</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">Past Collaborations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= GET INVOLVED SECTION ======================= -->
+        <section id="get-involved" class="page-section bg-light">
+            <div class="container">
+                <h2 class="section-title">Get Involved</h2>
+                <div class="get-involved-content">
+                    <p>You can make a difference. Follow our journey on social media, join our community, or apply to become a part of the core team. Together, we can create a smoke-free world.</p>
+                    <div class="social-links">
+                        <!-- TODO: Replace "#" with your actual social media links -->
+                        <a href="https://www.instagram.com/livelunger/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@livelunger" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://chat.whatsapp.com/FNNRvrHqaf8HypbJh59hW1?mode=ems_copy_h_t" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <!-- TODO: Replace "#" with your Google Survey link -->
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSejTGBQDO04bBAmzwbmu3R8OwleYYgTEKqLE_tAs3rjeY5aRw/viewform" target="_blank" class="btn btn-green">Apply to Join Us</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <a href="#home" class="logo">
+                 <img src="imgs/logo_trans.png" alt="LiveLunger Logo" class="logo-img">
+                LiveLunger
+            </a>
+            <p>© 2025 LiveLunger. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
